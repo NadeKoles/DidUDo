@@ -9,29 +9,50 @@ import os
 // Base table view controller with swipe-to-delete and rename functionality
 class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
     
+    weak var delegate: SwipeableViewControllerDelegate?
+    private var renameObserver: NSObjectProtocol? // For tracking text field changes
+    
     static var log: OSLog {
         return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "UI")
     }
-
+    
     var context: NSManagedObjectContext {
         return PersistenceController.shared.context
     }
     
-    var items: [Entity] {
-        return []
+    var items: [Entity] = []
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Apply background color
+        tableView.backgroundColor = AppColors.Background.main
+
+        // Configure navigation bar color
+        navigationController?.navigationBar.barTintColor = AppColors.Background.navBar
+        navigationController?.navigationBar.tintColor = AppColors.Text.primary
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: AppColors.Text.title]
+        
         // Adds a long-press gesture for renaming items
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         tableView.addGestureRecognizer(longPressGesture)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tapGesture)
+        
+        tableView.contentInset.bottom = 60  // Add bottom spacing under the last cell
+        tableView.alwaysBounceVertical = false  // Prevent bouncy scroll if there's not enough content
     }
     
     // MARK: - Core Data
     
     func saveItems() {
+        dispatchPrecondition(condition: .onQueue(.main))
         DataHelper.save(context: context)
         tableView.reloadData()
     }
@@ -40,27 +61,27 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         os_log("Swipe action triggered for row: %d", log: SwipeableViewController.log, type: .debug, indexPath.row)
-
+        
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
             os_log("Delete action selected for row: %d", log: SwipeableViewController.log, type: .debug, indexPath.row)
-
+            
             self.deleteEntity(at: indexPath, in: tableView)
             completionHandler(true)
         }
-        deleteAction.backgroundColor = AppColors.deleteColor
+        deleteAction.backgroundColor = AppColors.Button.delete
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
-    func deleteEntity(at indexPath: IndexPath, in tableView: UITableView) {
-        fatalError("deleteEntity(at:in:) must be implemented in subclasses")
+    @objc open func deleteEntity(at indexPath: IndexPath, in tableView: UITableView) {
+        preconditionFailure("\(Self.self) must override deleteEntity(at:in:) to support swipe-to-delete")
     }
-    
+
     // MARK: - Rename Functionality
     
     @objc private func handleLongPress(gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-
+        
         let touchPoint = gesture.location(in: tableView)
         if let indexPath = tableView.indexPathForRow(at: touchPoint) {
             presentRenameAlert(for: indexPath)
@@ -69,27 +90,54 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
     
     private func presentRenameAlert(for indexPath: IndexPath) {
         guard indexPath.row < items.count else { return }
-
+        
         let entity = items[indexPath.row]
         let key = entity.entity.attributesByName.keys.contains("name") ? "name" : "title"
-
-        let alert = UIAlertController(title: "Rename", message: "Enter a new name", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Rename", message: nil, preferredStyle: .alert)
+        
+        var saveAction: UIAlertAction!
+        
         alert.addTextField { textField in
-            textField.text = entity.value(forKey: key) as? String
-        }
-
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
-            if let newName = alert.textFields?.first?.text, !newName.isEmpty {
-                entity.setValue(newName, forKey: key)
-                self.saveItems()
+            let currentName = entity.value(forKey: key) as? String
+            textField.text = currentName
+            
+            // Dispatch needed to wait for the alert to present fully
+            DispatchQueue.main.async {
+                textField.becomeFirstResponder()
+                let start = textField.beginningOfDocument
+                let end = textField.endOfDocument
+                textField.selectedTextRange = textField.textRange(from: start, to: end)
+            }
+            
+            // Observe text changes to enable/disable Save button
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: .main) { _ in
+                let trimmed = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                saveAction.isEnabled = !trimmed.isEmpty
             }
         }
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
+        
+        saveAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.renameObserver = nil // Clear observer
+            
+            if let newName = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !newName.isEmpty {
+                entity.setValue(newName, forKey: key)
+                self.saveItems()
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        }
+        saveAction.isEnabled = false
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.renameObserver = nil
+        })
         alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-
+        
         present(alert, animated: true)
     }
+}
+
+protocol SwipeableViewControllerDelegate: AnyObject {
+    func didUpdateItems()
 }

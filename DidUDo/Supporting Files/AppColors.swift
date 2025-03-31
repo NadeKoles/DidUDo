@@ -30,15 +30,24 @@ extension UIColor {
 
 struct AppColors {
     
-    static let backgroundColor = UIColor(light: 0xffffff, dark: 0x333333) // white - dark gray
-    static let navBarColor = UIColor(light: 0x718dbf, dark: 0x35445e) // blue-gray - dark blue-gray
-    
-    static let plusBtnColor = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
-    static let deleteColor = UIColor(light: 0xe84d60, dark: 0xe84d60) // red - red
-    static let checkmarkColor = UIColor(light: 0x77c298, dark: 0xfecd6c) // green - yellow
+    struct Background {
+        static let main = UIColor(light: 0xffffff, dark: 0x333333) // white - dark gray
+        static let navBar = UIColor(light: 0x718dbf, dark: 0x35445e) // blue-gray - dark blue-gray
+    }
 
-    static let appNameColor = UIColor(light: 0x35445e, dark: 0xFFFFFF) // dark blue-gray - white
-    
-    static let textColor = UIColor(light: 0x342E37, dark: 0xFFFFFF) // dark gray - white
-    static let secondTextColor = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
+    struct Button {
+        static let plus = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
+        static let delete = UIColor(light: 0xe84d60, dark: 0xe84d60) // red - red
+    }
+
+    struct Icon {
+        static let checkmark = UIColor(light: 0xe84d60, dark: 0xfecd6c) // green - yellow
+    }
+
+    struct Text {
+        static let primary = UIColor(light: 0x342E37, dark: 0xFFFFFF) // dark gray - white
+        static let secondary = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
+        static let title = UIColor(light: 0x35445e, dark: 0xFFFFFF) // dark blue-gray - white
+    }
+
 }

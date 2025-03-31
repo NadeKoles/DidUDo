@@ -33,7 +33,7 @@ extension NavBarConfig where Self: UIViewController {
         let plusImage = UIImage(
             systemName: "plus",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        )?.withTintColor(AppColors.plusBtnColor, renderingMode: .alwaysOriginal)
+        )?.withTintColor(AppColors.Button.plus, renderingMode: .alwaysOriginal)
 
         let plusButton = UIBarButtonItem(
             image: plusImage,

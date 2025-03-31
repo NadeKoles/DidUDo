@@ -15,11 +15,12 @@ class PersistenceController {
     var context: NSManagedObjectContext { container.viewContext } // Core Data context
     
     private init() {
-        container = NSPersistentContainer(name: "DataModel") // Ensure the name matches your .xcdatamodeld file
+        container = NSPersistentContainer(name: "DataModel")
         container.loadPersistentStores { _, error in
             if let error = error {
-                os_log("❌ Failed to load Core Data: %@", log: PersistenceController.log, type: .error, error.localizedDescription)
-            }
+                os_log("Failed to load Core Data: %@", log: PersistenceController.log, type: .error, error.localizedDescription)
+            } else { } 
         }
     }
+    
 }

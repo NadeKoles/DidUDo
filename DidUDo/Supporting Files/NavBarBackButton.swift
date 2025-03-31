@@ -11,7 +11,7 @@ extension UIViewController {
         let backImage = UIImage(
             systemName: "arrow.left",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        )?.withTintColor(AppColors.appNameColor, renderingMode: .alwaysOriginal)
+        )?.withTintColor(AppColors.Text.title, renderingMode: .alwaysOriginal)
         
         let backButton = UIBarButtonItem(
             image: backImage,

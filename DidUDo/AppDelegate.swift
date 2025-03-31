@@ -7,7 +7,7 @@ import os
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+   
     var window: UIWindow?
 
     static let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "AppLifecycle") // Logging for app events
@@ -15,11 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
       
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = AppColors.navBarColor
+        appearance.backgroundColor = AppColors.Background.navBar
         
         // Customize navigation bar title appearance
         appearance.titleTextAttributes = [
-            .foregroundColor: AppColors.appNameColor,
+            .foregroundColor: AppColors.Text.title,
             .font: UIFont.boldSystemFont(ofSize: 20)
         ]
 
@@ -33,9 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PersistenceController.shared.context.performAndWait {
             do {
                 try PersistenceController.shared.context.save()
-                os_log("✅ Core Data saved on app termination", log: AppDelegate.log, type: .info)
+                os_log("Core Data saved on app termination", log: AppDelegate.log, type: .info)
             } catch {
-                os_log("❌ Error saving Core Data: %@", log: AppDelegate.log, type: .error, error.localizedDescription)
+                os_log("Error saving Core Data: %@", log: AppDelegate.log, type: .error, error.localizedDescription)
             }
         }
     }

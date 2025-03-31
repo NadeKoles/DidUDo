@@ -14,6 +14,7 @@
 		CE6FA6372D6F17A500738BDE /* SwipeableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6FA6362D6F17A500738BDE /* SwipeableViewController.swift */; };
 		CE70D7632D718299003015E5 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70D7622D718299003015E5 /* AppColors.swift */; };
 		CE70D7652D71C3A6003015E5 /* NavBarConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70D7642D71C3A6003015E5 /* NavBarConfig.swift */; };
+		CECFA5E32D7C325C00CDB3D6 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFA5E22D7C325C00CDB3D6 /* FolderViewController.swift */; };
 		CEE703EB2D797E2E00B70BC9 /* NavBarBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE703EA2D797E2E00B70BC9 /* NavBarBackButton.swift */; };
 		CEE703F72D79A1B200B70BC9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CEE703F52D79A1B200B70BC9 /* DataModel.xcdatamodeld */; };
 		CEF857BD2CE5FF6A00044D74 /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEF857BB2CE5FF6A00044D74 /* ItemCell.xib */; };
@@ -32,6 +33,7 @@
 		CE6FA6362D6F17A500738BDE /* SwipeableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableViewController.swift; sourceTree = "<group>"; };
 		CE70D7622D718299003015E5 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		CE70D7642D71C3A6003015E5 /* NavBarConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarConfig.swift; sourceTree = "<group>"; };
+		CECFA5E22D7C325C00CDB3D6 /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		CEE703EA2D797E2E00B70BC9 /* NavBarBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarBackButton.swift; sourceTree = "<group>"; };
 		CEE703F62D79A1B200B70BC9 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		CEF857BB2CE5FF6A00044D74 /* ItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		CEFA67592D158856001DDD9F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CECFA5E22D7C325C00CDB3D6 /* FolderViewController.swift */,
 				CEFF9B8E2D5F782C009BEBBC /* CategoryViewController.swift */,
 				EB2BE4FD239524DB00FB933B /* TodoListViewController.swift */,
 				CE6FA6362D6F17A500738BDE /* SwipeableViewController.swift */,
@@ -205,6 +208,7 @@
 				CEE703EB2D797E2E00B70BC9 /* NavBarBackButton.swift in Sources */,
 				CE6FA6372D6F17A500738BDE /* SwipeableViewController.swift in Sources */,
 				CE0196622D6313C8008E2A48 /* DataHelper.swift in Sources */,
+				CECFA5E32D7C325C00CDB3D6 /* FolderViewController.swift in Sources */,
 				CE70D7652D71C3A6003015E5 /* NavBarConfig.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				CEE703F72D79A1B200B70BC9 /* DataModel.xcdatamodeld in Sources */,
@@ -280,7 +284,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -337,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -354,7 +358,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4N38846NF;
 				INFOPLIST_FILE = DidUDo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -376,7 +380,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4N38846NF;
 				INFOPLIST_FILE = DidUDo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
