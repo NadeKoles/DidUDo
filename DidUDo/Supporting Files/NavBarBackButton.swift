@@ -9,9 +9,9 @@ extension UIViewController {
     
     func addBackButton() {
         let backImage = UIImage(
-            systemName: "arrow.left",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        )?.withTintColor(AppColors.Text.title, renderingMode: .alwaysOriginal)
+            systemName: "chevron.left",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .heavy)
+        )?.withTintColor(AppColors.Button.back, renderingMode: .alwaysOriginal)
         
         let backButton = UIBarButtonItem(
             image: backImage,

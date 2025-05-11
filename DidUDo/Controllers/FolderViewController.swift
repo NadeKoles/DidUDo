@@ -9,7 +9,6 @@ import os
 class FolderViewController: SwipeableViewController<Folder>, SwipeableViewControllerDelegate, Addable, NavBarConfig {
     
     var shouldShowBackButton: Bool { return true }
-    
     var folderArray = [Folder]()
     
     override var items: [Folder] {
@@ -24,10 +23,13 @@ class FolderViewController: SwipeableViewController<Folder>, SwipeableViewContro
         loadFolders() // Make sure folders refresh
     }
     
+    private weak var headerView: FoldersHeaderView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         loadFolders()
         setupPlusButton(action: #selector(addButtonPressed))
+        checkEmptyState()
     }
     
     // MARK: - TableView Data Source Methods
@@ -46,12 +48,46 @@ class FolderViewController: SwipeableViewController<Folder>, SwipeableViewContro
         var content = cell.defaultContentConfiguration()
         content.text = folder.name
         content.secondaryText = "(lists: \(categoriesCount))"
-        content.textProperties.color = AppColors.Text.primary
-        content.secondaryTextProperties.color = AppColors.Text.secondary
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 22)
+        content.image = UIImage(systemName: "folder", withConfiguration: config)?
+            .withTintColor(AppColors.Icon.folder, renderingMode: .alwaysOriginal)
+        
+        content.textProperties.font = cellTextFont
+        content.secondaryTextProperties.font = cellSecondaryTextFont
+        content.textProperties.color = cellTextColor
+        content.secondaryTextProperties.color = cellSecondaryTextColor
+
         cell.contentConfiguration = content
         cell.backgroundColor = AppColors.Background.main
+        cell.accessoryType = .disclosureIndicator
+        cell.tintColor = AppColors.Text.secondary
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = FoldersHeaderView(title: "Folders")
+        headerView = header
+        return header
+    }
+    
+    //  Handles header view effects during scrolling
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = max(scrollView.contentOffset.y, 0)
+        headerView?.updateForScroll(offsetY: offsetY)
+    }
+    
+    private func checkEmptyState() {
+        if folderArray.isEmpty {
+            let label = UILabel()
+            label.text = "create your first folder"
+            label.textAlignment = .center
+            label.textColor = AppColors.Text.secondary
+            tableView.backgroundView = label
+        } else {
+            tableView.backgroundView = nil
+        }
     }
     
     // MARK: - Add New Folder
@@ -59,7 +95,7 @@ class FolderViewController: SwipeableViewController<Folder>, SwipeableViewContro
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         addEntity(
             alertTitle: "Add New Folder",
-            placeholder: "Enter folder name",
+            placeholder: "enter folder name",
             entityType: Folder.self,
             nameKey: "name"
         )
@@ -70,6 +106,7 @@ class FolderViewController: SwipeableViewController<Folder>, SwipeableViewContro
     func loadFolders() {
         folderArray = DataHelper.fetchEntities(entity: Folder.self, context: context)
         tableView.reloadData()
+        checkEmptyState()
     }
     
     func appendItem(_ item: Folder) {
@@ -105,6 +142,7 @@ class FolderViewController: SwipeableViewController<Folder>, SwipeableViewContro
         DispatchQueue.main.async {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+        checkEmptyState()
     }
     
 }

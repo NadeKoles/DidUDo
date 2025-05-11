@@ -16,11 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = AppColors.Background.navBar
-        
+                
         // Customize navigation bar title appearance
         appearance.titleTextAttributes = [
-            .foregroundColor: AppColors.Text.title,
-            .font: UIFont.boldSystemFont(ofSize: 20)
+            .foregroundColor: AppColors.Text.navBarTitle,
+            .font: AppFonts.navBarTitle
         ]
 
         UINavigationBar.appearance().standardAppearance = appearance
