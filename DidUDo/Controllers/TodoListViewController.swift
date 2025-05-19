@@ -9,6 +9,7 @@ import os
 class TodoListViewController: SwipeableViewController<Item>, SwipeableViewControllerDelegate, Addable, NavBarConfig {
     
     var shouldShowBackButton: Bool { return true }  // Enables the back button for this screen
+    private var isSearching = false
     
     var itemArray = [Item]()  // Stores the list of tasks
     var selectedCategory: Category? {
@@ -36,11 +37,19 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
         super.viewDidLoad()
         loadItems()
         configureNavigationBar()
+        configureSearchBar()
         setupPlusButton(action: #selector(addButtonPressed))
-        searchBar.backgroundImage = UIImage()  // Removes default background
-        searchBar.autocapitalizationType = .none
+        checkEmptyState()
     }
     
+    private func configureSearchBar() {
+        searchBar.backgroundImage = UIImage()
+        searchBar.autocapitalizationType = .none
+        searchBar.placeholder = "Search dodos"
+        searchBar.delegate = self
+        isSearching = false
+    }
+
     // MARK: - TableView Data Source Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,9 +64,14 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
         // Configures the cell with task title
         var content = cell.defaultContentConfiguration()
         content.text = item.name
+        
+        content.textProperties.font = cellTextFont
+        content.textProperties.color = cellTextColor
+        
         cell.contentConfiguration = content
         cell.backgroundColor = AppColors.Background.main
-
+        
+        
         cell.accessoryType = item.done ? .checkmark : .none
         
         // Custom bold checkmark for completed tasks
@@ -83,8 +97,8 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         addEntity(
-            alertTitle: "Add New Item",
-            placeholder: "Enter item name",
+            alertTitle: "Add New Dodo",
+            placeholder: "enter dodo name",
             entityType: Item.self,
             nameKey: "name",
             parentKey: "parentCategory",
@@ -98,6 +112,7 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
         guard let category = selectedCategory else {
             itemArray = []
             tableView.reloadData()
+            checkEmptyState()
             return
         }
         
@@ -116,6 +131,7 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
             itemArray = []
         }
         tableView.reloadData()
+        checkEmptyState()
     }
     
     func appendItem(_ item: Item) {
@@ -127,12 +143,14 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
         tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
         
         delegate?.didUpdateItems()  // Reload everything correctly
+        checkEmptyState()
     }
     
     override func saveItems() {
         DataHelper.save(context: context)
         tableView.reloadData()
         delegate?.didUpdateItems()
+        searchBar.delegate = nil
     }
     
     override func deleteEntity(at indexPath: IndexPath, in tableView: UITableView) {
@@ -145,13 +163,29 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
         delegate?.didUpdateItems()
+        checkEmptyState()
     }
-  
+    
+    private func checkEmptyState() {
+        if itemArray.isEmpty {
+            let label = UILabel()
+            label.text = isSearching ? "no results :c" : "create your first dodo"
+            label.textAlignment = .center
+            label.textColor = AppColors.Text.secondary
+            tableView.backgroundView = label
+        } else {
+            tableView.backgroundView = nil
+        }
+    }
+    
+    // MARK: - Search Bar Filtering Items
+    
     private func filterItems(with searchText: String) {
         DispatchQueue.main.async {
             let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else {
                 self.loadItems()
+                
                 return
             }
             
@@ -167,21 +201,27 @@ class TodoListViewController: SwipeableViewController<Item>, SwipeableViewContro
 // MARK: - Search Bar Functionality
 
 extension TodoListViewController: UISearchBarDelegate {
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
-            filterItems(with: searchText)
-        }
-    }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterItems(with: searchText)
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if searchText.isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                searchBar.resignFirstResponder()
-            }
+        if trimmed.isEmpty {
+            isSearching = false
+            loadItems()
+        } else {
+            isSearching = true
+            filterItems(with: trimmed)
         }
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchBar.delegate = nil
+    }
 }
+
+

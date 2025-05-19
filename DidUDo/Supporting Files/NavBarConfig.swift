@@ -21,7 +21,6 @@ extension NavBarConfig where Self: UIViewController {
 
     func configureNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = false
-        
         // Adds back button only if needed
         if shouldShowBackButton {
             addBackButton()
@@ -32,7 +31,7 @@ extension NavBarConfig where Self: UIViewController {
     func setupPlusButton(action: Selector) {
         let plusImage = UIImage(
             systemName: "plus",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .heavy)
         )?.withTintColor(AppColors.Button.plus, renderingMode: .alwaysOriginal)
 
         let plusButton = UIBarButtonItem(

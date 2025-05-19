@@ -16,6 +16,11 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
         return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "UI")
     }
     
+    var cellTextFont: UIFont = AppFonts.primary
+    var cellSecondaryTextFont: UIFont = AppFonts.secondary
+    var cellTextColor: UIColor = AppColors.Text.primary
+    var cellSecondaryTextColor: UIColor = AppColors.Text.secondary
+    
     var context: NSManagedObjectContext {
         return PersistenceController.shared.context
     }
@@ -31,12 +36,8 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
         
         // Apply background color
         tableView.backgroundColor = AppColors.Background.main
+        tableView.separatorColor = AppColors.Background.divider
 
-        // Configure navigation bar color
-        navigationController?.navigationBar.barTintColor = AppColors.Background.navBar
-        navigationController?.navigationBar.tintColor = AppColors.Text.primary
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: AppColors.Text.title]
-        
         // Adds a long-press gesture for renaming items
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         tableView.addGestureRecognizer(longPressGesture)
@@ -47,6 +48,13 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
         
         tableView.contentInset.bottom = 60  // Add bottom spacing under the last cell
         tableView.alwaysBounceVertical = false  // Prevent bouncy scroll if there's not enough content
+    }
+    
+    
+    //MARK: - Cell
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
     
     // MARK: - Core Data
@@ -141,3 +149,5 @@ class SwipeableViewController<Entity: NSManagedObject>: UITableViewController {
 protocol SwipeableViewControllerDelegate: AnyObject {
     func didUpdateItems()
 }
+
+

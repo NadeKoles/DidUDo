@@ -5,6 +5,7 @@ import Foundation
 import CoreData
 import os
 
+// Manages Core Data stack and provides access to the managed object context
 class PersistenceController {
     
     static let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "CoreData")

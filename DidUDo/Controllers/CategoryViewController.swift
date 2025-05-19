@@ -9,6 +9,7 @@ import os
 class CategoryViewController: SwipeableViewController<Category>, SwipeableViewControllerDelegate, Addable, NavBarConfig {
     
     var shouldShowBackButton: Bool { return true }
+    private var isSearching = false
     
     var categoryArray = [Category]()
     var selectedFolder: Folder? {
@@ -28,11 +29,23 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
         delegate?.didUpdateItems()  // Notify FolderVC
     }
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         loadCategories()
         setupPlusButton(action: #selector(addButtonPressed))
+        configureSearchBar()
+        checkEmptyState()
+    }
+    
+    private func configureSearchBar() {
+        searchBar.backgroundImage = UIImage()
+        searchBar.autocapitalizationType = .none
+        searchBar.placeholder = "Search lists and dodos"
+        searchBar.delegate = self
+        isSearching = false
     }
     
     // MARK: - TableView Data Source Methods
@@ -53,11 +66,15 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
         var content = cell.defaultContentConfiguration()
         content.text = category.name
         content.secondaryText = "(done: \(doneCount), open: \(openCount))"
-        content.secondaryTextProperties.color = AppColors.Text.secondary
+        
+        content.textProperties.font = cellTextFont
+        content.secondaryTextProperties.font = cellSecondaryTextFont
+        content.textProperties.color = cellTextColor
+        content.secondaryTextProperties.color = cellSecondaryTextColor
+        
         cell.contentConfiguration = content
         cell.backgroundColor = AppColors.Background.main
         
-
         return cell
     }
     
@@ -80,8 +97,8 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         addEntity(
-            alertTitle: "Add New Category",
-            placeholder: "Enter category name",
+            alertTitle: "Add New List",
+            placeholder: "enter list name",
             entityType: Category.self,
             nameKey: "name",
             parentKey: "parentFolder",
@@ -95,12 +112,14 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
         guard let folder = selectedFolder else {
             categoryArray = []
             tableView.reloadData()
+            checkEmptyState()
             return
         }
         
         let predicate = NSPredicate(format: "parentFolder == %@", folder)
         categoryArray = DataHelper.fetchEntities(entity: Category.self, predicate: predicate, context: context)
         tableView.reloadData()
+        checkEmptyState()
     }
     
     func appendItem(_ item: Category) {
@@ -109,11 +128,13 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
         delegate?.didUpdateItems()
+        checkEmptyState()
     }
     
     override func saveItems() {
         DataHelper.save(context: context)
         delegate?.didUpdateItems()
+        checkEmptyState()
     }
     
     override func deleteEntity(at indexPath: IndexPath, in tableView: UITableView) {
@@ -125,7 +146,75 @@ class CategoryViewController: SwipeableViewController<Category>, SwipeableViewCo
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
         delegate?.didUpdateItems()
+        checkEmptyState()
     }
     
+    private func checkEmptyState() {
+        if categoryArray.isEmpty {
+            let label = UILabel()
+            label.text = isSearching ? "no results :c" : "create your first list"
+            label.textAlignment = .center
+            label.textColor = AppColors.Text.secondary
+            tableView.backgroundView = label
+        } else {
+            tableView.backgroundView = nil
+        }
+    }
+    
+    // MARK: - Search Bar Filtering Items
+    
+    private func filterCategories(with searchText: String) {
+        
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmed.isEmpty else {
+            loadCategories() // This already calls reloadData() and checkEmptyState()
+            return
+        }
+        
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        
+        // Create and assign the predicate directly
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [
+            NSPredicate(format: "name CONTAINS[cd] %@", trimmed),
+            NSPredicate(format: "ANY items.name CONTAINS[cd] %@", trimmed)
+        ])
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        categoryArray = DataHelper.fetchEntities(
+            entity: Category.self,
+            predicate: request.predicate,
+            context: context
+        )
+        
+        tableView.reloadData()
+        checkEmptyState()
+    }
 }
 
+// MARK: - Search Bar Functionality
+
+extension CategoryViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let trimmed = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trimmed.isEmpty {
+            isSearching = false
+            loadCategories()
+        } else {
+            isSearching = true
+            filterCategories(with: trimmed)
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchBar.delegate = nil
+    }
+}

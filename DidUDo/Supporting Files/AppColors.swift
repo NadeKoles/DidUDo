@@ -31,23 +31,27 @@ extension UIColor {
 struct AppColors {
     
     struct Background {
-        static let main = UIColor(light: 0xffffff, dark: 0x333333) // white - dark gray
-        static let navBar = UIColor(light: 0x718dbf, dark: 0x35445e) // blue-gray - dark blue-gray
+        static let main = UIColor(light: 0xede5d7, dark: 0x0f1117) // light beige - dark blue
+        static let navBar = UIColor(light: 0x7f8f40, dark: 0x263141) // muted olive green - dark blue
+        static let divider = UIColor(light: 0xb5ab9e, dark: 0x4a4d57) // soft gray - deep gray
     }
-
+    
     struct Button {
-        static let plus = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
-        static let delete = UIColor(light: 0xe84d60, dark: 0xe84d60) // red - red
+        static let plus = UIColor(light: 0xf9f8f4, dark: 0xf4c15d) // off-white - golden yellow
+        static let delete = UIColor(light: 0xe17184, dark: 0xd94f4f) // soft pink - vibrant red
+        static let back = UIColor(light: 0xf9f8f4, dark: 0xf4c15d) // off-white - golden yellow
     }
-
+    
     struct Icon {
-        static let checkmark = UIColor(light: 0xe84d60, dark: 0xfecd6c) // green - yellow
+        static let checkmark = UIColor(light: 0x599ee7, dark: 0xa2dff7) // light blue - pastel blue
+        static let folder = UIColor(light: 0x272623, dark: 0xb4c0d4) // dark grayish blue - light blue
     }
-
+    
     struct Text {
-        static let primary = UIColor(light: 0x342E37, dark: 0xFFFFFF) // dark gray - white
-        static let secondary = UIColor(light: 0x77c298, dark: 0x77c298) // green - green
-        static let title = UIColor(light: 0x35445e, dark: 0xFFFFFF) // dark blue-gray - white
+        static let primary = UIColor(light: 0x0d1925, dark: 0xf0f0f5) // dark gray - off-white
+        static let secondary = UIColor(light: 0x7097b5, dark: 0xa1a6b2) // light blue-gray - muted gray
+        static let title = UIColor(light: 0x272623, dark: 0xb4c0d4) // dark blue-gray - light blue
+        static let navBarTitle = UIColor(light: 0xf9f8f4, dark: 0xf4c15d) // off-white - golden yellow
     }
-
 }
+

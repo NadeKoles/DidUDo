@@ -10,10 +10,12 @@
 		CE0196622D6313C8008E2A48 /* DataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0196612D6313C8008E2A48 /* DataHelper.swift */; };
 		CE0196642D632E4E008E2A48 /* Addable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0196632D632E4E008E2A48 /* Addable.swift */; };
 		CE069BDA2D68A42900EA88EA /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE069BD92D68A42900EA88EA /* PersistenceController.swift */; };
-		CE664EB22D43A7AC0011972D /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE664EAF2D43A7AC0011972D /* ItemCell.swift */; };
+		CE14CA4D2DC26E7000E53BB8 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE14CA4C2DC26E6900E53BB8 /* AppFonts.swift */; };
+		CE4623AE2DBD6B4000D495EA /* FoldersHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4623AD2DBD6B2D00D495EA /* FoldersHeaderView.swift */; };
 		CE6FA6372D6F17A500738BDE /* SwipeableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6FA6362D6F17A500738BDE /* SwipeableViewController.swift */; };
 		CE70D7632D718299003015E5 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70D7622D718299003015E5 /* AppColors.swift */; };
 		CE70D7652D71C3A6003015E5 /* NavBarConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70D7642D71C3A6003015E5 /* NavBarConfig.swift */; };
+		CE79F35D2DB847B500047674 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79F35C2DB847A800047674 /* PaddingLabel.swift */; };
 		CECFA5E32D7C325C00CDB3D6 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFA5E22D7C325C00CDB3D6 /* FolderViewController.swift */; };
 		CEE703EB2D797E2E00B70BC9 /* NavBarBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE703EA2D797E2E00B70BC9 /* NavBarBackButton.swift */; };
 		CEE703F72D79A1B200B70BC9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CEE703F52D79A1B200B70BC9 /* DataModel.xcdatamodeld */; };
@@ -29,10 +31,12 @@
 		CE0196612D6313C8008E2A48 /* DataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHelper.swift; sourceTree = "<group>"; };
 		CE0196632D632E4E008E2A48 /* Addable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Addable.swift; sourceTree = "<group>"; };
 		CE069BD92D68A42900EA88EA /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		CE664EAF2D43A7AC0011972D /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		CE14CA4C2DC26E6900E53BB8 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
+		CE4623AD2DBD6B2D00D495EA /* FoldersHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersHeaderView.swift; sourceTree = "<group>"; };
 		CE6FA6362D6F17A500738BDE /* SwipeableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableViewController.swift; sourceTree = "<group>"; };
 		CE70D7622D718299003015E5 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		CE70D7642D71C3A6003015E5 /* NavBarConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarConfig.swift; sourceTree = "<group>"; };
+		CE79F35C2DB847A800047674 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		CECFA5E22D7C325C00CDB3D6 /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		CEE703EA2D797E2E00B70BC9 /* NavBarBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarBackButton.swift; sourceTree = "<group>"; };
 		CEE703F62D79A1B200B70BC9 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -65,10 +69,12 @@
 			isa = PBXGroup;
 			children = (
 				CEF857BB2CE5FF6A00044D74 /* ItemCell.xib */,
-				CE664EAF2D43A7AC0011972D /* ItemCell.swift */,
 				CE70D7622D718299003015E5 /* AppColors.swift */,
+				CE14CA4C2DC26E6900E53BB8 /* AppFonts.swift */,
 				CE70D7642D71C3A6003015E5 /* NavBarConfig.swift */,
 				CEE703EA2D797E2E00B70BC9 /* NavBarBackButton.swift */,
+				CE79F35C2DB847A800047674 /* PaddingLabel.swift */,
+				CE4623AD2DBD6B2D00D495EA /* FoldersHeaderView.swift */,
 				EB2BE502239524DC00FB933B /* Assets.xcassets */,
 			);
 			path = "Supporting Files";
@@ -207,13 +213,15 @@
 				EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */,
 				CEE703EB2D797E2E00B70BC9 /* NavBarBackButton.swift in Sources */,
 				CE6FA6372D6F17A500738BDE /* SwipeableViewController.swift in Sources */,
+				CE14CA4D2DC26E7000E53BB8 /* AppFonts.swift in Sources */,
 				CE0196622D6313C8008E2A48 /* DataHelper.swift in Sources */,
 				CECFA5E32D7C325C00CDB3D6 /* FolderViewController.swift in Sources */,
+				CE79F35D2DB847B500047674 /* PaddingLabel.swift in Sources */,
 				CE70D7652D71C3A6003015E5 /* NavBarConfig.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				CEE703F72D79A1B200B70BC9 /* DataModel.xcdatamodeld in Sources */,
-				CE664EB22D43A7AC0011972D /* ItemCell.swift in Sources */,
 				CE069BDA2D68A42900EA88EA /* PersistenceController.swift in Sources */,
+				CE4623AE2DBD6B4000D495EA /* FoldersHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
